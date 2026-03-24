@@ -8,44 +8,43 @@
     <link rel="apple-touch-icon" href="image_19.png">
     
     <style>
-        /* Base Color Changed to #444 */
-        body { font-family: -apple-system, sans-serif; background: #fff; color: #444; margin: 0; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+        /* Updated to #333 for a softer yet bold minimalist look */
+        body { font-family: -apple-system, sans-serif; background: #fff; color: #333; margin: 0; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; max-width: 400px; padding: 25px 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between; }
         
-        h1 { font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -1px; color: #444; }
-        .subtitle { font-size: 0.9rem; color: #888; margin: 5px 0 25px; }
+        h1 { font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -1px; color: #333; }
+        .subtitle { font-size: 0.9rem; color: #666; margin: 5px 0 25px; }
         
-        /* Input & Result unified area */
+        /* Unified Area - 15px Rounded */
         .txt-area { 
             width: 100%; height: 280px; padding: 20px; border: 1px solid #eee; 
             border-radius: 15px; font-size: 1.1rem; box-sizing: border-box; 
             resize: none; outline: none; margin-bottom: 20px; -webkit-appearance: none;
-            background: #fafafa; color: #444; transition: 0.3s;
+            background: #fafafa; color: #333; transition: 0.3s;
         }
-        .txt-area:focus { border-color: #444; background: #fff; }
+        .txt-area:focus { border-color: #333; background: #fff; }
 
-        /* Main Action - Color #444 */
+        /* Main Button #333 */
         .main-btn { 
             width: 100%; padding: 20px; font-size: 1.2rem; font-weight: 800; 
-            background: #444; color: #fff; border: none; border-radius: 15px; 
-            cursor: pointer; margin-bottom: 20px; transition: 0.2s;
+            background: #333; color: #fff; border: none; border-radius: 15px; 
+            cursor: pointer; margin-bottom: 20px; transition: opacity 0.2s;
         }
-        .main-btn:active { opacity: 0.8; transform: scale(0.98); }
+        .main-btn:active { opacity: 0.8; }
 
         .btn-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 20px; }
         .sub-btn { padding: 15px; font-size: 0.9rem; font-weight: 700; border-radius: 15px; cursor: pointer; transition: 0.2s; }
         
-        /* Sub Buttons with #444 Borders */
-        .copy-btn { background: #fff; border: 1px solid #444; color: #444; }
+        /* Sub Buttons with #333 Borders */
+        .copy-btn { background: #fff; border: 1px solid #333; color: #333; }
         .clear-btn { background: #fff; border: 1px solid #eee; color: #bbb; }
 
-        /* Footer Components - Consistent with #444 */
+        /* Footer Components - #333 */
         .footer-group { border-top: 1px solid #f0f0f0; padding-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        .kofi { background: #444; color: #fff; padding: 12px 24px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 13px; }
-        .inst-btn { background: #f0f0f0; color: #888; padding: 10px 20px; border-radius: 15px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; }
-        footer { font-size: 10px; color: #ccc; line-height: 1.4; padding-bottom: 20px; }
+        .kofi { background: #333; color: #fff; padding: 12px 24px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 13px; }
+        .inst-btn { background: #f0f0f0; color: #666; padding: 10px 20px; border-radius: 15px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; }
+        footer { font-size: 10px; color: #aaa; line-height: 1.4; padding-bottom: 20px; }
 
-        /* Modal */
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
         .m-content { background: #fff; padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; position: relative; }
         .m-box { background: #f8f8f8; padding: 15px; border-radius: 15px; text-align: left; margin-top: 15px; font-size: 0.9rem; line-height: 1.6; }
@@ -80,8 +79,8 @@
     <span class="close" onclick="cM()">&times;</span>
     <strong>📱 Install</strong><br><span style="font-size:0.8rem;color:#999">Add to your home screen.</span>
     <div class="m-box">
-        🍏 <strong>iPhone:</strong> Share > Add to Home Screen<br><br>
-        🤖 <strong>Android:</strong> Menu > Add to home screen
+        🍏 <strong>iPhone (Safari):</strong><br>Tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.<br><br>
+        🤖 <strong>Android (Chrome):</strong><br>Tap <strong>Menu (⋮)</strong>, then <strong>Add to home screen</strong>.
     </div>
 </div></div>
 
@@ -110,12 +109,12 @@
             const btn = document.getElementById('copyBtn');
             const originalText = btn.innerText;
             btn.innerText = "COPIED!";
-            btn.style.background = "#444";
+            btn.style.background = "#333";
             btn.style.color = "#fff";
             setTimeout(() => {
                 btn.innerText = originalText;
                 btn.style.background = "#fff";
-                btn.style.color = "#444";
+                btn.style.color = "#333";
             }, 1500);
         });
     }
