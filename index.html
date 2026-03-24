@@ -3,7 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tag Cleaner</title>
+    
+    <link rel="apple-touch-icon" href="image_19.png">
+    
+    <style>
+        /* Base Color Changed to #444 */
+        body { font-family: -apple-system, sans-serif; background: #fff; color: #444; margin: 0; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+        .container { width: 100%; max-width: 400px; padding: 25px 20px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between; }
+        
+        h1 { font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -1px; color: #444; }
+        .subtitle { font-size: 0.9rem; color: #888; margin: 5px 0 25px; }
+        
+        /* Input & Result unified area */
+        .txt-area { 
+            width: 100%; height: 280px; padding: 20px; border: 1px solid #eee; 
+            border-radius: 15px; font-size: 1.1rem; box-sizing: border-box; 
+            resize: none; outline: none; margin-bottom: 20px; -webkit-appearance: none;
+            background: #fafafa; color: #444; transition: 0.3s;
+        }
+        .txt-area:focus { border-color: #444; background: #fff; }
+
+        /* Main Action - Color #444 */
+        .main-btn { 
+            width: 100%; padding: 20px; font-size: 1.2rem; font-weight: 800; 
+            background: #444; color: #fff; border: none; border-radius: 15px; 
+            cursor: pointer; margin-bottom: 20px; transition: 0.2s;
+        }
+        .main-btn:active { opacity: 0.8; transform: scale(0.98); }
+
+        .btn-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .sub-btn { padding: 15px; font-size: 0.9rem; font-weight: 700; border-radius: 15px; cursor: pointer; transition: 0.2s; }
+        
+        /* Sub Buttons with #444 Borders */
+        .copy-btn { background: #fff; border: 1px solid #444; color: #444; }
+        .clear-btn { background: #fff; border: 1px solid #eee; color: #bbb; }
+
+        /* Footer Components - Consistent with #444 */
+        .footer-group { border-top: 1px solid #f0f0f0; padding-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .kofi { background: #444; color: #fff; padding: 12px 24px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 13px; }
+        .inst-btn { background: #f0f0f0; color: #888; padding: 10px 20px; border-radius: 15px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; }
+        footer { font-size: 10px; color: #ccc; line-height: 1.4; padding-bottom: 20px; }
+
+        /* Modal */
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .m-content { background: #fff; padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; position: relative; }
+        .m-box { background: #f8f8f8; padding: 15px; border-radius: 15px; text-align: left; margin-top: 15px; font-size: 0.9rem; line-height: 1.6; }
+        .close { position: absolute; top: 12px; right: 18px; font-size: 22px; cursor: pointer; color: #ccc; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <h1>Tag Cleaner</h1>
+        <p class="subtitle">Extract unique hashtags instantly.</p>
+        
+        <textarea id="workArea" class="txt-area" placeholder="Paste your draft here..."></textarea>
+        
+        <button class="main-btn" onclick="extractTags()">EXTRACT TAGS</button>
+
+        <div class="btn-row">
+            <button class="sub-btn copy-btn" id="copyBtn" onclick="copyTags()">COPY</button>
+            <button class="sub-btn clear-btn" onclick="resetAll()">RESET</button>
+        </div>
+    </div>
+
+    <div class="footer-group">
+        <a href="https://ko-fi.com/afrorakda" target="_blank" class="kofi">☕ Support me on Ko-fi</a>
+        <button class="inst-btn" onclick="sM()">Add to Home Screen</button>
+        <footer>No login / No tracking / No ads / Browser only<br>Privacy Policy<br>afrorakda © 2026</footer>
+    </div>
+</div>
+
+<div id="modal" onclick="cM()"><div class="m-content" onclick="event.stopPropagation()">
+    <span class="close" onclick="cM()">&times;</span>
+    <strong>📱 Install</strong><br><span style="font-size:0.8rem;color:#999">Add to your home screen.</span>
+    <div class="m-box">
+        🍏 <strong>iPhone:</strong> Share > Add to Home Screen<br><br>
+        🤖 <strong>Android:</strong> Menu > Add to home screen
+    </div>
+</div></div>
+
+<script>
+    function extractTags() {
+        const area = document.getElementById('workArea');
+        const text = area.value;
+        const tagRegex = /#[\w\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uF900-\uFAFF\uFF66-\uFF9F]+/g;
+        const matches = text.match(tagRegex);
+        
+        if (matches) {
+            const uniqueTags = [...new Set(matches)];
+            area.value = uniqueTags.join(" ");
+            area.style.background = "#fff";
+            area.focus();
+        } else {
+            alert("No hashtags found!");
+        }
+    }
+
+    function copyTags() {
+        const area = document.getElementById('workArea');
+        if (!area.value) return;
+        
+        navigator.clipboard.writeText(area.value).then(() => {
+            const btn = document.getElementById('copyBtn');
+            const originalText = btn.innerText;
+            btn.innerText = "COPIED!";
+            btn.style.background = "#444";
+            btn.style.color = "#fff";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "#fff";
+                btn.style.color = "#444";
+            }, 1500);
+        });
+    }
+
+    function resetAll() {
+        const area = document.getElementById('workArea');
+        area.value = "";
+        area.style.background = "#fafafa";
+    }
+
+    function sM() { document.getElementById('modal').style.display = 'flex'; }
+    function cM() { document.getElementById('modal').style.display = 'none'; }
+</script>
+
+</body>
+</html>
+Tag Cleaner</title>
     
     <link rel="apple-touch-icon" href="image_19.png">
     
