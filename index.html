@@ -31,7 +31,7 @@
         .container { 
             width: 100%; max-width: 380px; height: 100vh; 
             display: flex; flex-direction: column; position: relative; 
-            padding: 20px; box-sizing: border-box; 
+            padding: 10px 20px 20px; box-sizing: border-box; 
         }
 
         .main-unit {
@@ -43,7 +43,7 @@
         
         header { 
             display: flex; justify-content: space-between; align-items: start; 
-            margin-bottom: 15px; padding-top: 10px;
+            margin-bottom: 12px; padding-top: 5px;
         }
         .title-group h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.8px; margin: 0; }
         .subtitle { font-size: 0.8rem; color: #777; font-weight: 500; margin-top: 4px; }
@@ -55,7 +55,7 @@
         }
         .hub-link:active { transform: scale(0.95); background: var(--accent); color: var(--main); }
 
-        .textarea-wrapper { position: relative; flex-grow: 1; width: 100%; margin-bottom: 15px; }
+        .textarea-wrapper { position: relative; flex-grow: 1; width: 100%; margin-bottom: 12px; }
 
         textarea { 
             width: 100%; height: 100%; padding: 18px; border: 2px solid var(--accent); border-radius: var(--radius); 
@@ -67,47 +67,40 @@
         }
         textarea:focus { border-color: var(--main); background: #fff; }
         textarea.flash { background: #fff !important; border-color: #aaa !important; transition: none; }
+        textarea.error-flash { border-color: #e63946 !important; background: #fff5f5 !important; transition: none; }
 
-        /* クリアボタン（×） */
         .btn-clear-wrapper { position: absolute; right: 12px; bottom: 12px; display: none; }
         .btn-clear-wrapper.show { display: block; }
         .btn-clear {
-            width: 28px; height: 28px; background: rgba(0,0,0,0.1); color: #666; 
+            width: 32px; height: 32px; background: rgba(0,0,0,0.05); color: #888; 
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s;
+            font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; border: 1px solid #eee;
         }
-        .btn-clear:active { background: #e63946; color: #fff; transform: scale(0.9); }
+        .btn-clear:active { background: #e63946; color: #fff; border-color: #e63946; transform: scale(0.9); }
 
-        .button-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .button-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
 
         .main-btn { 
-            width: 100%; padding: 18px; border-radius: var(--radius); 
-            font-size: 1rem; font-weight: 800; cursor: pointer; transition: all 0.2s; 
+            width: 100%; padding: 16px; border-radius: var(--radius); 
+            font-size: 1rem; font-weight: 800; cursor: pointer; transition: all 0.15s; 
             -webkit-appearance: none; border: 2px solid var(--main);
         }
-        .main-btn:active { transform: scale(0.97); opacity: 0.8; }
+        .main-btn:active { transform: scale(0.97) translateY(2px); }
 
-        /* 動的ステータス用スタイル */
         .btn-extract.active { background-color: var(--main); color: #fff; }
         .btn-extract.inactive { background-color: #fff; color: var(--main); border-color: var(--accent); }
+        .btn-extract.error { background-color: #e63946; border-color: #e63946; color: #fff; }
         
-        .btn-copy.inactive { background-color: #fff; color: var(--main); }
-        .btn-copy.active { background-color: var(--main); color: #fff; border-color: var(--main); animation: pulse 0.4s ease-out; }
+        .btn-copy.inactive { background-color: #fff; color: var(--main); border-color: var(--accent); }
+        .btn-copy.active { background-color: var(--main); color: #fff; border-color: var(--main); }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        /* 鉄壁フッター */
         footer { padding: 15px 0 25px; text-align: center; border-top: 1px solid #f5f5f5; font-size: 11px; color: #666; font-weight: 600; }
-        .footer-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .footer-btns { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
         
         .outline-btn { 
             background: #fff; color: var(--main); border: 2px solid var(--main); 
-            padding: 12px; border-radius: var(--radius); text-decoration: none; 
-            font-weight: 800; font-size: 13px; display: flex; align-items: center; 
+            padding: 10px; border-radius: var(--radius); text-decoration: none; 
+            font-weight: 800; font-size: 12px; display: flex; align-items: center; 
             justify-content: center; cursor: pointer; transition: 0.2s;
         }
         .outline-btn:active { background: var(--accent); transform: scale(0.97); }
@@ -145,7 +138,7 @@
         </div>
     </div>
 
-    <footer id="dynamic-footer">
+    <footer>
         <div class="footer-btns">
             <a href="https://ko-fi.com/afrorakda" target="_blank" class="outline-btn" id="kofi-link">☕️buy me a coffee</a>
             <button class="outline-btn" onclick="showModal()" id="install-text">Add to Home Screen</button>
@@ -174,18 +167,29 @@
     const copyBtn = document.getElementById('copyBtn');
     const clearWrapper = document.getElementById('clearWrapper');
 
-    // 監視：入力がある時だけクリアボタンを出す
+    window.onload = () => {
+        const saved = localStorage.getItem('nd_tag_data') || '';
+        area.value = saved;
+        if(saved) clearWrapper.classList.add('show');
+        area.focus();
+    };
+
     area.addEventListener('input', () => {
+        localStorage.setItem('nd_tag_data', area.value);
         if (area.value.length > 0) clearWrapper.classList.add('show');
         else clearWrapper.classList.remove('show');
         
-        // 編集されたらボタンの状態をリセット
-        extractBtn.classList.remove('inactive');
+        resetButtons();
+    });
+
+    function resetButtons() {
+        extractBtn.classList.remove('inactive', 'error');
         extractBtn.classList.add('active');
+        extractBtn.innerText = "EXTRACT TAGS";
         copyBtn.classList.remove('active');
         copyBtn.classList.add('inactive');
         copyBtn.innerText = "COPY TAGS";
-    });
+    }
 
     function extractTags() {
         if (!area.value) return;
@@ -196,46 +200,42 @@
         if (matches) {
             const uniqueTags = [...new Set(matches)];
             area.value = uniqueTags.join(" ");
+            localStorage.setItem('nd_tag_data', area.value);
             
-            // 視覚的フィードバック
             area.classList.add('flash');
             setTimeout(() => area.classList.remove('flash'), 150);
 
-            // ボタンの状態を遷移
-            extractBtn.classList.remove('active');
-            extractBtn.classList.add('inactive');
-            copyBtn.classList.remove('inactive');
-            copyBtn.classList.add('active');
-            
+            extractBtn.classList.replace('active', 'inactive');
+            copyBtn.classList.replace('inactive', 'active');
             area.focus();
         } else {
-            alert("No hashtags found!");
+            // エラー演出：alertの代わりにボタンと窓で通知
+            extractBtn.classList.add('error');
+            extractBtn.innerText = "NO TAGS FOUND";
+            area.classList.add('error-flash');
+            setTimeout(() => {
+                extractBtn.classList.remove('error');
+                extractBtn.innerText = "EXTRACT TAGS";
+                area.classList.remove('error-flash');
+            }, 1000);
         }
     }
 
     function copyTags() {
         if (!area.value) return;
-        
         navigator.clipboard.writeText(area.value).then(() => {
             const originalText = copyBtn.innerText;
             copyBtn.innerText = "COPIED!";
-            setTimeout(() => {
-                copyBtn.innerText = "COPY TAGS";
-            }, 1500);
+            setTimeout(() => copyBtn.innerText = "COPY TAGS", 1500);
         });
     }
 
     function resetAll() {
-        if (!area.value) return;
-        if (confirm('Clear all text?')) {
-            area.value = "";
-            clearWrapper.classList.remove('show');
-            extractBtn.classList.remove('inactive');
-            extractBtn.classList.add('active');
-            copyBtn.classList.remove('active');
-            copyBtn.classList.add('inactive');
-            area.focus();
-        }
+        area.value = "";
+        localStorage.removeItem('nd_tag_data');
+        clearWrapper.classList.remove('show');
+        resetButtons();
+        area.focus();
     }
 
     function showModal() { document.getElementById('modal').style.display = 'flex'; }
